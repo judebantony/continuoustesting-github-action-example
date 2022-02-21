@@ -20,6 +20,7 @@ jobs:
         customHeaders: '{"Authorization": "${{ secrets.GRETEL_TOKEN }}"}'
     - name: Store the Response
       run: echo ${{ steps.myRequest.outputs.response }} > gretel.json
+    - run: cat gretel.json
     - name: Read the Respose
       id: format_script
       uses: notiz-dev/github-action-json-property@release
