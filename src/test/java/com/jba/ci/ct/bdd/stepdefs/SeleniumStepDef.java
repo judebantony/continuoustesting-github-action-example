@@ -41,16 +41,11 @@ public class SeleniumStepDef {
 	private static final String HTTPS = "https://";
 	private static final String HUB_CLOUD_LAMADATEST_COM_WD_HUB = "@hub.lambdatest.com/wd/hub";
 	private static final String COLLUMN = ":";
-	public static final String LAMADATEST_AUTOMATE_USERNAME = System.getenv(LT_EMAIL);
-	public static final String LAMADATEST_AUTOMATE_ACCESS_KEY = System.getenv(LT_ACCESS_KEY);
-	public static final String LAMADATEST_URL = new StringBuilder().append(HTTPS).append(LAMADATEST_AUTOMATE_USERNAME)
-			.append(COLLUMN).append(LAMADATEST_AUTOMATE_ACCESS_KEY).append(HUB_CLOUD_LAMADATEST_COM_WD_HUB).toString();
 	private static final String GOOGLE_URL = "https://www.google.com/";
 	private WebDriver driver;
 	
 	@Before()
 	public  void before_getdiver() {
-		System.out.println("Jude is here");
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("platform", WINDOWS_10);
 		caps.setCapability("browserName", CHROME);
@@ -63,8 +58,8 @@ public class SeleniumStepDef {
 		caps.setCapability("video", true);
 		caps.setCapability("console", true);
 		try {
-			log.info("LAMADATEST_URL {}",LAMADATEST_URL);
-			driver = new RemoteWebDriver(new URL(LAMADATEST_URL), caps);
+			driver = new RemoteWebDriver(new URL(new StringBuilder().append(HTTPS).append(System.getenv(LT_EMAIL))
+					.append(COLLUMN).append(System.getenv(LT_ACCESS_KEY)).append(HUB_CLOUD_LAMADATEST_COM_WD_HUB).toString()), caps);
 		} catch (Exception e) {
 			log.error("{}", e);
 		}
