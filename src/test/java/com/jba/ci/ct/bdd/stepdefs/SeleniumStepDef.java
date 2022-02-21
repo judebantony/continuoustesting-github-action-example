@@ -49,9 +49,8 @@ public class SeleniumStepDef {
 	private WebDriver driver;
 	
 	@Before()
-	public  WebDriver getWebDriver() {
+	public  void before_getdiver() {
 		System.out.println("Jude is here");
-		WebDriver driver = null;
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("platform", WINDOWS_10);
 		caps.setCapability("browserName", CHROME);
@@ -69,7 +68,6 @@ public class SeleniumStepDef {
 		} catch (Exception e) {
 			log.error("{}", e);
 		}
-		return driver;
 	}
 
 	@Given("I am on the Google search page")
