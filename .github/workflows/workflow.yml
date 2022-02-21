@@ -11,15 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Download Synthetic Test Data
+    - name: Get Synthetic Test Data File
       id: myRequest
       uses: fjogeleit/http-request-action@master
       with:
         url: 'https://api.gretel.cloud/projects/judebantony-868a3/artifacts/download?key=gretel_bf2744b39f6a48e48c6d19b6b4e2221e_BankChurners.csv'
         method: 'GET'
         customHeaders: '{"Authorization": "${{ secrets.GRETEL_TOKEN }}"}'
-    - name: Show Response
-      run: echo ${{ steps.myRequest.outputs.response }}     
+    - name: Store the Response
+      run: echo ${{ steps.myRequest.outputs.response }} > gretel.json
+    - name: Read the Respose
+      id: format_script
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+          path: 'gretel.json'
+          prop_path: 'data.data.url'
+    - run: echo ${{steps.format_script.outputs.prop}}         
 
   test:
     name: Build and Unit Test
