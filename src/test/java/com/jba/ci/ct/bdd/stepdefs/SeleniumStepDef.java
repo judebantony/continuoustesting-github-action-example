@@ -16,6 +16,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @Slf4j
+@CucumberContextConfiguration
 public class SeleniumStepDef {
 
 	private static final String _1024X768 = "1024x768";
