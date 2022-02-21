@@ -27,7 +27,8 @@ jobs:
       with: 
           path: 'gretel.json'
           prop_path: 'data.data.url'
-    - run: echo ${{steps.format_script.outputs.prop}}         
+    - run: curl ${{steps.format_script.outputs.prop}} >  gretel_out.csv
+    - run: cat gretel_out.csv
 
   test:
     name: Build and Unit Test
