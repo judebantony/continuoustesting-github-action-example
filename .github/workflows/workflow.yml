@@ -19,13 +19,13 @@ jobs:
         method: 'GET'
         customHeaders: '{"Authorization": "${{ secrets.GRETEL_TOKEN }}"}'
     - name: Store the Response
-      run: echo ${{ steps.myRequest.outputs.response }} > gretel.json
-    - run: cat gretel.json
+      run: echo ${{ steps.myRequest.outputs.response }} > gretel.txt
+    - run: cat gretel.txt
     - name: Read the Respose
       id: format_script
       uses: notiz-dev/github-action-json-property@release
       with: 
-          path: 'gretel.json'
+          path: 'gretel.txt'
           prop_path: 'data.data.url'
     - run: echo ${{steps.format_script.outputs.prop}}         
 
