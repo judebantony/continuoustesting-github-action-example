@@ -19,6 +19,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import src.test.java.com.jba.ci.bdd.stepdefs.String;
 
 /**
  * @author judebarnabasantony
@@ -42,12 +43,17 @@ public class SeleniumStepDef {
 	private static final String HUB_CLOUD_LAMADATEST_COM_WD_HUB = "@hub.lambdatest.com/wd/hub";
 	private static final String COLLUMN = ":";
 	private static final String GOOGLE_URL = "https://www.google.com/";
+	public static final String LAMADATEST_AUTOMATE_USERNAME = System.getenv("LT_EMAIL");
+	public static final String LAMADATEST_AUTOMATE_ACCESS_KEY = System.getenv("LT_ACCESS_KEY");
+
 	private WebDriver driver;
 	
 	@Before()
 	public  void before_getdiver() {
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("platform", WINDOWS_10);
+		caps.setCapability("user", LAMADATEST_AUTOMATE_USERNAME);
+		caps.setCapability("accessKey", LAMADATEST_AUTOMATE_ACCESS_KEY);
 		caps.setCapability("browserName", CHROME);
 		caps.setCapability("version", _92_0);
 		caps.setCapability("resolution", _1024X768);
@@ -58,8 +64,8 @@ public class SeleniumStepDef {
 		caps.setCapability("video", true);
 		caps.setCapability("console", true);
 		try {
-			driver = new RemoteWebDriver(new URL(new StringBuilder().append(HTTPS).append(System.getenv(LT_EMAIL))
-					.append(COLLUMN).append(System.getenv(LT_ACCESS_KEY)).append(HUB_CLOUD_LAMADATEST_COM_WD_HUB).toString()), caps);
+			driver = new RemoteWebDriver(new URL(new StringBuilder().append(HTTPS).append(LAMADATEST_AUTOMATE_USERNAME)
+					.append(COLLUMN).append(LAMADATEST_AUTOMATE_ACCESS_KEY).append(HUB_CLOUD_LAMADATEST_COM_WD_HUB).toString()), caps);
 		} catch (Exception e) {
 			log.error("{}", e);
 		}
