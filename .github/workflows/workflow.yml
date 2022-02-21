@@ -19,19 +19,19 @@ jobs:
         method: 'GET'
         customHeaders: '{"Authorization": "${{ secrets.GRETEL_TOKEN }}"}'
     - name: Store the Response
-      run: cat <<< ${{ toJSON(steps.myRequest.outputs.response) }} > gretel.json
+      run: cat <<< ${{ toJSON(steps.myRequest.outputs.response) }} > gretel_out.json
     - name: Read the Respose
       id: format_script
       uses: notiz-dev/github-action-json-property@release
       with: 
-          path: 'gretel.json'
+          path: 'gretel_out.json'
           prop_path: 'data.data.url'
-    - run: curl -X GET "${{steps.format_script.outputs.prop}}" >  gretel_out.csv
+    - run: curl -X GET "${{steps.format_script.outputs.prop}}" >  gretel.csv
     - name: Upload code coverage report
       uses: actions/upload-artifact@v2
       with:
         name: gretel_testdata
-        path: gretel_out.csv
+        path: gretel.csv
 
   test:
     name: Build and Unit Test
@@ -52,7 +52,12 @@ jobs:
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2     
+          restore-keys: ${{ runner.os }}-m2  
+      - name: Download Test Data
+        uses: actions/download-artifact@v2
+        with:
+          name: gretel_testdata
+      - run: ls -lst    
       - name: Build
         run: mvn -B clean package -DskipTests
       - name: Run UnitTest and Verify 
