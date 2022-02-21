@@ -13,6 +13,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -45,9 +46,11 @@ public class SeleniumStepDef {
 	public static final String LAMADATEST_URL = new StringBuilder().append(HTTPS).append(LAMADATEST_AUTOMATE_USERNAME)
 			.append(COLLUMN).append(LAMADATEST_AUTOMATE_ACCESS_KEY).append(HUB_CLOUD_LAMADATEST_COM_WD_HUB).toString();
 	private static final String GOOGLE_URL = "https://www.google.com/";
-	private static final WebDriver driver = getWebDriver();
-
-	private static WebDriver getWebDriver() {
+	private WebDriver driver;
+	
+	@Before()
+	public  WebDriver getWebDriver() {
+		System.out.println("Jude is here");
 		WebDriver driver = null;
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("platform", WINDOWS_10);
