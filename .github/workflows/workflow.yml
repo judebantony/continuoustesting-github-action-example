@@ -6,9 +6,25 @@ on:
 
 jobs:
 
+  syntheticDataDownload:
+    name: Download Synthetic Test Data File from Gretel  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Download Synthetic Test Data
+      id: myRequest
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: 'https://api.gretel.cloud/projects/judebantony-868a3/artifacts/download?key=gretel_bf2744b39f6a48e48c6d19b6b4e2221e_BankChurners.csv'
+        method: 'GET'
+        bearerToken: ${{ secrets.GRETEL_TOKEN }}
+    - name: Show Response
+      run: echo ${{ steps.myRequest.outputs.response }}     
+
   test:
     name: Build and Unit Test
     runs-on: ubuntu-latest
+    needs: [syntheticDataDownload]
     
     steps:
       - name: Check out the code
@@ -50,15 +66,9 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         with:
            files: target/surefire-reports/*.xml
-      - name: Katalon Report Uploader
-        uses: katalon-studio/report-uploader@v0.0.7.11
-        env:
-          EMAIL: ${{ secrets.KATALON_EMAIL }}
-          PASSWORD: ${{ secrets.KATALON_PWD }}
-          PROJECT_ID: 494065
-          TYPE: junit
-          REPORT_PATH: target/surefire-reports/     
-                
+
+      
+              
   codeqlScan:
       name: SAST Scan using CodeQL
       runs-on: ubuntu-latest
@@ -116,33 +126,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  releaseTag:
-      name: Release Tag & Note Creation 
-      runs-on: ubuntu-latest
-      needs: [gitHubPakageArtifactPush]
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
-        - name: Bump version and push tag
-          id: tag_version
-          uses: anothrNick/github-tag-action@1.26.0
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            WITH_V: true
-      
-        - name: Build Changelog
-          id: github_release
-          uses: mikepenz/release-changelog-builder-action@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
-        - name: Create Release
-          uses: actions/create-release@v1
-          with:
-            tag_name: ${{ steps.tag_version.outputs.new_tag }}
-            release_name: Release ${{ steps.tag_version.outputs.new_tag }}
-            body: ${{steps.github_release.outputs.changelog}}
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
