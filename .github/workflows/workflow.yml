@@ -83,7 +83,7 @@ jobs:
   lamdaTest:
     name: 'LamdaTest QA Test Validation'
     runs-on: ubuntu-latest 
-    needs: [qadeploy]
+    needs: [test]
     
     steps:
       - name: Start Tunnel
