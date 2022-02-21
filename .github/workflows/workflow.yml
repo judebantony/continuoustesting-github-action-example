@@ -53,14 +53,10 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2  
-      - name: Download Test Data
-        uses: actions/download-artifact@v2
-        with:
-          name: gretel_testdata
       - name: Build
         run: mvn -B clean package -DskipTests
       - name: Run UnitTest and Verify 
-        run: mvn -B verify
+        run: mvn -B verify -DexcludedGroups="LamdaTest"
       - name: Generate JaCoCo Badge
         id: jacoco
         uses: cicirello/jacoco-badge-generator@v2
@@ -83,62 +79,47 @@ jobs:
         with:
            files: target/surefire-reports/*.xml
 
-      
-              
-  codeqlScan:
-      name: SAST Scan using CodeQL
-      runs-on: ubuntu-latest
-      needs: [test]
-      
-      permissions:
-        actions: read
-        contents: read
-        security-events: write
-      strategy:
-        fail-fast: false
-        matrix:
-          language: [ 'java' ]
-          
-      steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-           fetch-depth: 0
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          languages: ${{ matrix.language }}
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
-  
-  gitHubPakageArtifactPush:
-    name: Publish Artifact to GitHub Package
+
+  lamdaTest:
+    name: 'LamdaTest QA Test Validation'
     runs-on: ubuntu-latest 
-    needs: [codeqlScan] 
+    needs: [qadeploy]
     
-    permissions: 
-      contents: read
-      packages: write 
-      
     steps:
+      - name: Start Tunnel
+        id: tunnel
+        uses: LambdaTest/LambdaTest-tunnel-action@v1
+        with:
+          user: ${{ secrets.LT_EMAIL }}
+          accessKey: ${{ secrets.LT_ACCESS_KEY }}
+          tunnelName: "testTunnel"
       - name: Check out the code
         uses: actions/checkout@v1
         with:
           fetch-depth: 0
-      - name: Set up JDK 8
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - name: Download Test Data
+        uses: actions/download-artifact@v2
+        with:
+          name: gretel_testdata
       - name: Cache Maven packages
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Publish package
-        run: mvn --batch-mode deploy -DskipTests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          restore-keys: ${{ runner.os }}-m2     
+      - name: Run LamdaTest Automation
+        run: mvn -B verify -Dgroups="LamdaTest"
+        env: 
+          CUCUMBER_PUBLISH_TOKEN: ${{secrets.CUCUMBER_PUBLISH_TOKEN}}
+          LT_EMAIL: ${{ secrets.LT_EMAIL }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+      - name: Export Tunnel Logs for debugging
+        uses: actions/upload-artifact@v2
+        with:
+           name: tunnel_logs
+           path: ${{ steps.tunnel.outputs.logFileName }}          
+      
