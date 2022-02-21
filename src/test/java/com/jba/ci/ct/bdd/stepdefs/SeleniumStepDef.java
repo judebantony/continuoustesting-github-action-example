@@ -61,6 +61,7 @@ public class SeleniumStepDef {
 		caps.setCapability("video", true);
 		caps.setCapability("console", true);
 		try {
+			log.info("LAMADATEST_URL {}",LAMADATEST_URL);
 			driver = new RemoteWebDriver(new URL(LAMADATEST_URL), caps);
 		} catch (Exception e) {
 			log.error("{}", e);
