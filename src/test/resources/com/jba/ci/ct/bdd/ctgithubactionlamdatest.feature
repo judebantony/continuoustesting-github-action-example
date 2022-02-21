@@ -1,7 +1,6 @@
 @LamdaTest
-Feature: Test Swagger UI
-  Scenario: Swagger UI successful 
-
-    Given user wants to check Swagger UI
-    When user wants to check ui for tool "LamdaTest"
-    Then return ui
+Feature: Test Google Search
+	Scenario: Finding some cheese
+	   Given I am on the Google search page
+	   When I search for "Cheese!"
+	   Then the page title should start with "cheese"
