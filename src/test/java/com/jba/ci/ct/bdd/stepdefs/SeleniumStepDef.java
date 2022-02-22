@@ -56,11 +56,12 @@ public class SeleniumStepDef {
 	public void before_getdiver() {
 		getDesiredCapabilities();
 		try {
-			try (CSVReader reader = new CSVReader(new FileReader("file.csv"))) {
+			try (CSVReader reader = new CSVReader(new FileReader("gretel.csv"))) {
 				List<String[]> r = reader.readAll();
 				r.forEach(x -> System.out.println(Arrays.toString(x)));
 			}
 		} catch (Exception e) {
+			log.error("{}", e);
 		}
 	}
 
