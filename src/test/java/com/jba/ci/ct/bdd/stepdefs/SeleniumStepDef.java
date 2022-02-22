@@ -56,6 +56,7 @@ public class SeleniumStepDef {
 	public static final String LAMADATEST_AUTOMATE_ACCESS_KEY = System.getenv(LT_ACCESS_KEY);
 	public static final String GRETEL_TEST_OUT_FILE_PATH = System.getenv(GRETEL_TEST_OUT_FILE);
 	private List<GretelTestData> listGretelTestData;
+	private String testData;
 	private WebDriver driver;
 
 	@Before()
@@ -73,7 +74,7 @@ public class SeleniumStepDef {
 				CsvToBean<GretelTestData> csvToBean = new CsvToBeanBuilder<GretelTestData>(reader)
 						.withMappingStrategy(strategy).withIgnoreLeadingWhiteSpace(true).build();
 				listGretelTestData = csvToBean.parse();
-
+				testData = listGretelTestData.get(0).getCompany();
 			}
 		} catch (Exception e) {
 			log.error("{}", e);
@@ -112,13 +113,17 @@ public class SeleniumStepDef {
 	@When("I search for test data from gredel")
 	public void search_for() {
 		WebElement element = driver.findElement(By.name(Q));
-		element.sendKeys(listGretelTestData.get(0).getCompany());
+		element.sendKeys(testData);
+		log.info("Gretel Test Data :: {}",testData);
 		element.submit();
 	}
 
 	@Then("the page title should start with same test data")
 	public void checkTitle() {
-		new WebDriverWait(driver, 10L).until(d -> d.getTitle().toLowerCase().startsWith(listGretelTestData.get(0).getCompany()));
+		new WebDriverWait(driver, 40L).until(d -> {
+			log.info("Gretel Test Data :: {}",testData);
+			log.info("Browser Title Data :: {}",d.getTitle());
+			return d.getTitle().startsWith(testData);});
 	}
 
 	@After()
