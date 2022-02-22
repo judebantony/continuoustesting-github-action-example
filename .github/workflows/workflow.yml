@@ -20,7 +20,7 @@ jobs:
       id: myRequest
       uses: fjogeleit/http-request-action@master
       with:
-        url: 'https://api.gretel.cloud/projects/$GRETEL_PROJECT/artifacts/download?key=$GRETEL_TEST_FILE'
+        url: 'https://api.gretel.cloud/projects/${{env.GRETEL_PROJECT}}/artifacts/download?key=${{env.GRETEL_TEST_FILE}}'
         method: 'GET'
         customHeaders: '{"Authorization": "${{ secrets.GRETEL_TOKEN }}"}'
     - name: Store the Response
@@ -31,7 +31,7 @@ jobs:
       with: 
           path: 'gretel_out.json'
           prop_path: 'data.data.url'
-    - run: curl -X GET "${{steps.format_script.outputs.prop}}" >  $GRETEL_TEST_OUT_FILE
+    - run: curl -X GET "${{steps.format_script.outputs.prop}}" >  ${{env.GRETEL_TEST_OUT_FILE}}
     - name: Upload code coverage report
       uses: actions/upload-artifact@v2
       with:
