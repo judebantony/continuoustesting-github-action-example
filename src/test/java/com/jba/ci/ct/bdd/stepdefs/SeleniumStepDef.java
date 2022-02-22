@@ -109,16 +109,16 @@ public class SeleniumStepDef {
 		driver.get(GOOGLE_URL);
 	}
 
-	@When("I search for {string}")
-	public void search_for(String query) {
+	@When("I search for test data from gredel")
+	public void search_for() {
 		WebElement element = driver.findElement(By.name(Q));
 		element.sendKeys(listGretelTestData.get(0).getCompany());
 		element.submit();
 	}
 
-	@Then("the page title should start with {string}")
-	public void checkTitle(String titleStartsWith) {
-		new WebDriverWait(driver, 10L).until(d -> d.getTitle().toLowerCase().startsWith(titleStartsWith));
+	@Then("the page title should start with same test data")
+	public void checkTitle() {
+		new WebDriverWait(driver, 10L).until(d -> d.getTitle().toLowerCase().startsWith(listGretelTestData.get(0).getCompany()));
 	}
 
 	@After()
