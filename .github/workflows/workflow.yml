@@ -32,6 +32,6 @@ jobs:
       with: 
           path: 'gretel_out.json'
           prop_path: 'data.url'
-    - run: curl -O GET "${{steps.format_script.outputs.prop}}" >  ${{env.GRETEL_TEST_OUT_FILE}}
-    - run: cd  ${{env.GRETEL_TEST_OUT_FILE}} | ls -lst    
+    - run: curl -O GET "${{steps.format_script.outputs.prop}}"
+    - run: ls -lst    
       
