@@ -7,6 +7,7 @@ on:
 env:
   GRETEL_PROJECT: judebantony-868a3
   GRETEL_TEST_FILE: gretel_2549b151fd284721b75d4a726e1d1618_dataset.csv
+  GRETEL_MODEL: 6214794460dc0eccb24afc19
   GRETEL_TEST_OUT_FILE: gretel.csv
   
 jobs:
@@ -20,7 +21,7 @@ jobs:
       id: myRequest
       uses: fjogeleit/http-request-action@master
       with:
-        url: 'https://api.gretel.cloud/projects/${{env.GRETEL_PROJECT}}/artifacts/download?key=${{env.GRETEL_TEST_FILE}}'
+        url: 'https://api.gretel.cloud/projects/${{env.GRETEL_PROJECT}}/models/${{env.GRETEL_MODEL}}/artifact?type=model'
         method: 'GET'
         customHeaders: '{"Authorization": "${{ secrets.GRETEL_TOKEN }}"}'
     - name: Store the Response
