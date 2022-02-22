@@ -73,7 +73,7 @@ public class SeleniumStepDef {
 				CsvToBean<GretelTestData> csvToBean = new CsvToBeanBuilder<GretelTestData>(reader)
 						.withMappingStrategy(strategy).withIgnoreLeadingWhiteSpace(true).build();
 				listGretelTestData = csvToBean.parse();
-				listGretelTestData.forEach(System.out::println);
+				
 			}
 		} catch (Exception e) {
 			log.error("{}", e);
@@ -111,9 +111,11 @@ public class SeleniumStepDef {
 
 	@When("I search for {string}")
 	public void search_for(String query) {
-		WebElement element = driver.findElement(By.name(Q));
-		element.sendKeys(query);
-		element.submit();
+		listGretelTestData.parallelStream().forEach(lstData -> {
+			WebElement element = driver.findElement(By.name(Q));
+			element.sendKeys(lstData.getCompany());
+			element.submit();
+		} );
 	}
 
 	@Then("the page title should start with {string}")
