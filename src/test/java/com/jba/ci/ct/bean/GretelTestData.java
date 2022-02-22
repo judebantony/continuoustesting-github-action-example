@@ -20,26 +20,5 @@ public class GretelTestData {
     @CsvBindByPosition(position = 4)
     private String deal;
     
-    @CsvBindByPosition(position = 5)
-    private Boolean ashneer;
-    
-    @CsvBindByPosition(position = 6)
-    private Boolean namita;
-    
-    @CsvBindByPosition(position = 7)
-    private Boolean anupam;
-    
-    @CsvBindByPosition(position = 8)
-    private Boolean vineeta;
-    
-    @CsvBindByPosition(position = 9)
-    private Boolean aman;
-    
-    @CsvBindByPosition(position = 10)
-    private Boolean peyush;
- 
-    @CsvBindByPosition(position = 11)
-    private Boolean ghazal;
-    
     
 }
