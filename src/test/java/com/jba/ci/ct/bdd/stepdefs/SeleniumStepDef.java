@@ -5,7 +5,6 @@ package com.jba.ci.ct.bdd.stepdefs;
 
 import java.io.FileReader;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -15,7 +14,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.jba.ci.ct.bean.GretelTestData;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -43,22 +47,33 @@ public class SeleniumStepDef {
 	private static final String Q = "q";
 	private static final String LT_ACCESS_KEY = "LT_ACCESS_KEY";
 	private static final String LT_EMAIL = "LT_EMAIL";
+	private static final String GRETEL_TEST_OUT_FILE = "GRETEL_TEST_OUT_FILE";
 	private static final String HTTPS = "https://";
 	private static final String HUB_CLOUD_LAMADATEST_COM_WD_HUB = "@hub.lambdatest.com/wd/hub";
 	private static final String COLLUMN = ":";
 	private static final String GOOGLE_URL = "https://www.google.com/";
 	public static final String LAMADATEST_AUTOMATE_USERNAME = System.getenv(LT_EMAIL);
 	public static final String LAMADATEST_AUTOMATE_ACCESS_KEY = System.getenv(LT_ACCESS_KEY);
-
+	public static final String GRETEL_TEST_OUT_FILE_PATH = System.getenv(GRETEL_TEST_OUT_FILE);
+	private List<GretelTestData> listGretelTestData;
 	private WebDriver driver;
 
 	@Before()
 	public void before_getdiver() {
 		getDesiredCapabilities();
+		getTestData();
+	}
+
+	private void getTestData() {
 		try {
-			try (CSVReader reader = new CSVReader(new FileReader("gretel.csv"))) {
-				List<String[]> r = reader.readAll();
-				r.forEach(x -> System.out.println(Arrays.toString(x)));
+			try (CSVReader reader = new CSVReaderBuilder(new FileReader(GRETEL_TEST_OUT_FILE_PATH)).withSkipLines(1)
+					.build()) {
+				ColumnPositionMappingStrategy<GretelTestData> strategy = new ColumnPositionMappingStrategy<>();
+				strategy.setType(GretelTestData.class);
+				CsvToBean<GretelTestData> csvToBean = new CsvToBeanBuilder<GretelTestData>(reader)
+						.withMappingStrategy(strategy).withIgnoreLeadingWhiteSpace(true).build();
+				listGretelTestData = csvToBean.parse();
+				listGretelTestData.forEach(System.out::println);
 			}
 		} catch (Exception e) {
 			log.error("{}", e);

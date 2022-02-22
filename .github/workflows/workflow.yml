@@ -4,6 +4,11 @@ on:
   push:
     branches: [ main ]
 
+env:
+  GRETEL_PROJECT: judebantony-868a3
+  GRETEL_TEST_FILE: gretel_2549b151fd284721b75d4a726e1d1618_dataset.csv
+  GRETEL_TEST_OUT_FILE: gretel.csv
+  
 jobs:
 
   syntheticDataDownload:
@@ -15,7 +20,7 @@ jobs:
       id: myRequest
       uses: fjogeleit/http-request-action@master
       with:
-        url: 'https://api.gretel.cloud/projects/judebantony-868a3/artifacts/download?key=gretel_bf2744b39f6a48e48c6d19b6b4e2221e_BankChurners.csv'
+        url: 'https://api.gretel.cloud/projects/$GRETEL_PROJECT/artifacts/download?key=$GRETEL_TEST_FILE'
         method: 'GET'
         customHeaders: '{"Authorization": "${{ secrets.GRETEL_TOKEN }}"}'
     - name: Store the Response
@@ -26,7 +31,7 @@ jobs:
       with: 
           path: 'gretel_out.json'
           prop_path: 'data.data.url'
-    - run: curl -X GET "${{steps.format_script.outputs.prop}}" >  gretel.csv
+    - run: curl -X GET "${{steps.format_script.outputs.prop}}" >  $GRETEL_TEST_OUT_FILE
     - name: Upload code coverage report
       uses: actions/upload-artifact@v2
       with:
