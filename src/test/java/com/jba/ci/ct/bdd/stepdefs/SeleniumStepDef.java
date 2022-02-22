@@ -3,7 +3,10 @@
  */
 package com.jba.ci.ct.bdd.stepdefs;
 
+import java.io.FileReader;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.opencsv.CSVReader;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -46,9 +51,20 @@ public class SeleniumStepDef {
 	public static final String LAMADATEST_AUTOMATE_ACCESS_KEY = System.getenv(LT_ACCESS_KEY);
 
 	private WebDriver driver;
-	
+
 	@Before()
-	public  void before_getdiver() {
+	public void before_getdiver() {
+		getDesiredCapabilities();
+		try {
+			try (CSVReader reader = new CSVReader(new FileReader("file.csv"))) {
+				List<String[]> r = reader.readAll();
+				r.forEach(x -> System.out.println(Arrays.toString(x)));
+			}
+		} catch (Exception e) {
+		}
+	}
+
+	private void getDesiredCapabilities() {
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("platform", WINDOWS_10);
 		caps.setCapability("user", LAMADATEST_AUTOMATE_USERNAME);
@@ -63,8 +79,10 @@ public class SeleniumStepDef {
 		caps.setCapability("video", true);
 		caps.setCapability("console", true);
 		try {
-			driver = new RemoteWebDriver(new URL(new StringBuilder().append(HTTPS).append(LAMADATEST_AUTOMATE_USERNAME)
-					.append(COLLUMN).append(LAMADATEST_AUTOMATE_ACCESS_KEY).append(HUB_CLOUD_LAMADATEST_COM_WD_HUB).toString()), caps);
+			driver = new RemoteWebDriver(
+					new URL(new StringBuilder().append(HTTPS).append(LAMADATEST_AUTOMATE_USERNAME).append(COLLUMN)
+							.append(LAMADATEST_AUTOMATE_ACCESS_KEY).append(HUB_CLOUD_LAMADATEST_COM_WD_HUB).toString()),
+					caps);
 		} catch (Exception e) {
 			log.error("{}", e);
 		}
