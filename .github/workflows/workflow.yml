@@ -35,4 +35,5 @@ jobs:
     - run: curl -X GET "${{steps.format_script.outputs.prop}}" > data_preview.gz
     - run: ls -lst
     - run: gzip -d data_preview.gz
-    - run: ls -lst
+    - run: cat data_preview
+    
