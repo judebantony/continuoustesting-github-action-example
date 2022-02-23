@@ -27,5 +27,163 @@ Synthetic data generation (SDG) is rapidly emerging as a practical privacy enhan
 
 Privacy engineering expertise delivered to you as easy to use tools and APIs. Synthesize, Classify and Transform your data in minutes. Build trust, and innovate faster for your users. [Gretel](https://gretel.ai/) make it simple to create anonymized and synthetic datasets so you can work safely with data while preserving privacy.
 
+## Create Synthetic Data using Gretel.ai
+
+work in progress :)
+
 ## Integrating Continuous Testing tools using GitHub Action ##
-Integration & Implementation of E2E CI/CD release workflow using [Github Action](https://github.com/features/actions), this has been achieved using different Cloud SaaS tools listed below.
+Integration & Implementation of Continuous Testing workflow using [Github Action](https://github.com/features/actions), this has been achieved using GitHub Cloud, Gretel & LamdaTest SaaS tools listed below.
+
+### 1) Gretel - Download Synthetic Test Data File from Gretel SaaS###
+Download already modeled & trained Synthetic Test Data from [Gretel](https://gretel.ai/) SaaS and uploaded as artifact in GitHub.
+
+```yaml
+
+  syntheticDataDownload:
+    name: Download Synthetic Test Data File from Gretel  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Get Synthetic Test Data File
+      id: myRequest
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: 'https://api.gretel.cloud/projects/${{env.GRETEL_PROJECT}}/models/${{env.GRETEL_MODEL}}/artifact?type=data_preview'
+        method: 'GET'
+        customHeaders: '{"Authorization": "${{ secrets.GRETEL_TOKEN }}"}'
+    - name: Store the Response
+      run: cat <<< ${{ toJSON(steps.myRequest.outputs.response) }} > gretel_out.json
+    - name: Read the Respose
+      id: format_script
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+          path: 'gretel_out.json'
+          prop_path: 'data.url'
+    - run: curl -X GET "${{steps.format_script.outputs.prop}}" > data_preview.gz
+    - run: gzip -d data_preview.gz
+    - run: mv data_preview ${{env.GRETEL_TEST_OUT_FILE}}
+    - name: Upload code coverage report
+      uses: actions/upload-artifact@v2
+      with:
+        name: gretel_testdata
+        path: ${{env.GRETEL_TEST_OUT_FILE}}
+
+```
+
+GitHub artifact:-
+![githubactionartifats](./doc/githubactionartifats.png)
+
+
+### 2) Maven - Build and Unit Test ###
+[Apache Maven](https://maven.apache.org) is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting and documentation from a central piece of information.
+
+Code is build using [Maven](https://maven.apache.org) and unit test cases are executed using [JUnit](https://junit.org/junit5/)
+The test coverage result, which is aggregated by [Jacoco](https://www.baeldung.com/sonarqube-jacoco-code-coverage) would be uploaded to [Github Action](https://github.com/features/actions) as artifacts. Please check [pom.xml](https://github.com/judebantony/continuoustesting-github-action-example/tree/main/pom.xml) as well. 
+
+```yaml
+
+  test:
+    name: Build and Unit Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2     
+      - name: Build
+        run: mvn -B clean package -DskipTests
+      - name: Run UnitTest and Verify 
+        run: mvn -B verify -DexcludedGroups="LamdaTest"
+      - name: Generate JaCoCo Badge
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2
+      - name: Log code coverage percentage
+        run: |
+          echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
+          echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"
+      - name: Upload code coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+      - name: Adding Junit Report
+        uses: ashley-taylor/junit-report-annotations-action@master
+        if: always()
+        with:
+          access-token: ${{ secrets.GITHUB_TOKEN }}          
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        with:
+           files: target/surefire-reports/*.xml
+
+```
+
+In [pom.xml](https://github.com/judebantony/continuoustesting-github-action-example/tree/main/pom.xml), we need to add the jacoco plugin.
+
+GitHub Action:-
+![githubaction](./doc/githubaction.png)
+
+### 3) Functional Web UI Test - Using LamdaTest. ###
+
+Run your [Selenium](https://www.selenium.dev) test automation scripts across online selenium grid of desktop, Android and iOS mobile browsers. Develop, test, and deliver faster every time with automated cross browser testing using LambdaTest online Automation Browser Testing Grid.
+
+Execute the [Selenium](https://www.selenium.dev) [Cucumber](https://cucumber.io) based UI Test Cases using [LamdaTest](https://www.lambdatest.com/?fp_ref=aliakbar42) and capture the result. The feature files are present [here](https://github.com/judebantony/continuoustesting-github-action-example/tree/main/src/test/resources/com/jba/ci/ct/bdd/).
+
+```yaml 
+
+  lamdaTest:
+    name: 'LamdaTest QA Test Validation'
+    runs-on: ubuntu-latest 
+    needs: [test]
+    
+    steps:
+      - name: Start Tunnel
+        id: tunnel
+        uses: LambdaTest/LambdaTest-tunnel-action@v1
+        with:
+          user: ${{ secrets.LT_EMAIL }}
+          accessKey: ${{ secrets.LT_ACCESS_KEY }}
+          tunnelName: "testTunnel"
+      - name: Check out the code
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2     
+      - name: Run LamdaTest Automation
+        run: mvn -B verify -Dgroups="LamdaTest"
+        env: 
+          CUCUMBER_PUBLISH_TOKEN: ${{secrets.CUCUMBER_PUBLISH_TOKEN}}
+          LT_EMAIL: ${{ secrets.LT_EMAIL }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+      - name: Export Tunnel Logs for debugging
+        uses: actions/upload-artifact@v2
+        with:
+           name: tunnel_logs
+           path: ${{ steps.tunnel.outputs.logFileName }}          
+
+```
+LambdaTest dashboard:-
+![lamdatest](./doc/lamdatest.png)
+
+LambdaTest Test Result:-
+![lamdatest1](./doc/lamdatest1.png)
