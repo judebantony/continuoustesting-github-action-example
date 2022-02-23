@@ -28,8 +28,16 @@ Synthetic data generation (SDG) is rapidly emerging as a practical privacy enhan
 Privacy engineering expertise delivered to you as easy to use tools and APIs. Synthesize, Classify and Transform your data in minutes. Build trust, and innovate faster for your users. [Gretel](https://gretel.ai/) make it simple to create anonymized and synthetic datasets so you can work safely with data while preserving privacy.
 
 ## Create Synthetic Data using Gretel.ai
+[Gretel](https://gretel.ai/) has CLI, APIs and web based portal SaaS offering for creating synthetic data. Trained the machine learning models on your datasets and generate synthetic data that statistically equivalent. Automatically label data and perform privacy-preserving transformations on any dataset and automatically label classify your data. 
 
-work in progress :)
+### Kaggle - Sample dataset for training
+[Kaggle](https://www.kaggle.com/datasets) a subsidiary of Google LLC, is an online community of data scientists and machine learning practitioners. Kaggle allows users to find and publish data sets, explore and build models in a web-based data-science environment, work with other data scientists and machine learning engineers, and enter competitions to solve data science challenges.
+ 
+Sample dataset from Kaggle is present [here](https://github.com/judebantony/continuoustesting-github-action-example/tree/main/doc/dataset.csv) 
+
+Kaggle dashboard:-
+![kaggle](./doc/kaggle.png)
+
 
 ## Integrating Continuous Testing tools using GitHub Action ##
 Integration & Implementation of Continuous Testing workflow using [Github Action](https://github.com/features/actions), this has been achieved using GitHub Cloud, Gretel & LamdaTest SaaS tools listed below.
