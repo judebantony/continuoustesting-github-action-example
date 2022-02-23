@@ -32,7 +32,7 @@ jobs:
       with: 
           path: 'gretel_out.json'
           prop_path: 'data.url'
-    - run: curl -X -o data_preview.gz GET "${{steps.format_script.outputs.prop}}"
+    - run: curl -X GET "${{steps.format_script.outputs.prop}}" > data_preview.gz
     - run: ls -lst
     - run: tar -zxvf data_preview.gz
     - run: ls -lst
