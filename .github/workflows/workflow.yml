@@ -34,5 +34,5 @@ jobs:
           prop_path: 'data.url'
     - run: curl -X GET "${{steps.format_script.outputs.prop}}" > data_preview.gz
     - run: ls -lst
-    - run: tar -zxvf data_preview.gz
+    - run: gzip -d data_preview.gz
     - run: ls -lst
