@@ -40,11 +40,11 @@ Kaggle dashboard:-
 
 #### Gretel.ai - Synthetic data
 
-1) Create a project in Gretel
+1) Create a project in Gretel</br>
 Gretel dashboard:-
 ![greteldashboard](./doc/greteldashboard.png)
 
-2) Create a model in Gretel and upload the data set
+2) Create a model in Gretel and upload the data set</br>
 Create model:-
 ![gretelcretemodel](./doc/gretelcretemodel.png)
 
