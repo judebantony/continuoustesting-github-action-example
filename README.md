@@ -6,7 +6,7 @@ Continuous testing in DevSecOps is a type of software testing that involves test
 
 The old way of testing was hand off centric. The software was handed off from one team to another. A project would have definite Development and QA phases. QA teams always wanted more time to ensure quality. The goal was that the quality should prevail over project schedule.
 
-Businesses of today, however, business wants faster delivery of software to the end user. The newer is the software, the better it can be marketed and increase revenue potential of the company. Hence, a new way of testing was evolved. Continuous Testing is a procedure of testing early, testing regular, test everywhere, and automate. Continuous means undisrupted testing done on a continuous basis. In a Continuous DevSecOps process, a software change continuously moves from Development to Testing to Deployment. The This process helps us to find the risk, address them and improve the quality of the product.
+Businesses of today, however, business wants faster delivery of software to the end user. The newer is the software, the better it can be marketed and increase revenue potential of the company. Hence, a new way of testing was evolved. Continuous Testing is a procedure of testing early, testing regular, test everywhere, and automate. Continuous means undisrupted testing done on a continuous basis. In a Continuous DevSecOps process, a software change continuously moves from Development to Testing to Deployment. This process helps us to find the risk, address them and improve the quality of the product.
 
 ## Data Driven Testing 
 
@@ -30,7 +30,7 @@ Privacy engineering expertise delivered to you as easy to use tools and APIs. Sy
 ## Create Synthetic Data using Gretel.ai
 [Gretel](https://gretel.ai/) has CLI, APIs and web based portal SaaS offering for creating synthetic data. Trained the machine learning models on your datasets and generate synthetic data that statistically equivalent. Automatically label data and perform privacy-preserving transformations on any dataset and automatically label classify your data. 
 
-### Kaggle - Sample dataset for training
+#### Kaggle - Sample dataset for training
 [Kaggle](https://www.kaggle.com/datasets) a subsidiary of Google LLC, is an online community of data scientists and machine learning practitioners. Kaggle allows users to find and publish data sets, explore and build models in a web-based data-science environment, work with other data scientists and machine learning engineers, and enter competitions to solve data science challenges.
  
 Sample dataset from Kaggle is present [here](https://github.com/judebantony/continuoustesting-github-action-example/tree/main/doc/dataset.csv) 
@@ -38,12 +38,35 @@ Sample dataset from Kaggle is present [here](https://github.com/judebantony/cont
 Kaggle dashboard:-
 ![kaggle](./doc/kaggle.png)
 
+#### Gretel.ai - Sysnthetic data
+
+1) Create a project in Gretel
+Gretel dashboard:-
+![greteldashboard](./doc/greteldashboard.png)
+
+2) Create a model in Gretel and upload the data set
+Create model:-
+![gretelcretemodel](./doc/gretelcretemodel.png)
+
+3) Train the model with configuration and validate
+Train the ML Model:-
+![greteltraining](./doc/greteltraining.png)
+![greteltrainieddata](./doc/greteltrainieddata.png)
+Validate the Model:-
+![gretelvalidate](./doc/gretelvalidate.png)
+Model Output:-
+![gretelmodeloutput](./doc/gretelmodeloutput.png)
+Model Download:-
+![greteldownload](./doc/greteldownload.png)
+Model Report:-
+![gretelmodelreport](./doc/gretelmodelreport.png)
+
 
 ## Integrating Continuous Testing tools using GitHub Action ##
 Integration & Implementation of Continuous Testing workflow using [Github Action](https://github.com/features/actions), this has been achieved using GitHub Cloud, Gretel & LamdaTest SaaS tools listed below.
 
 ### 1) Gretel - Download Synthetic Test Data File from Gretel SaaS###
-Download already modeled & trained Synthetic Test Data from [Gretel](https://gretel.ai/) SaaS and uploaded as artifact in GitHub.
+Download already modeled & trained Synthetic Test Data from [Gretel](https://gretel.ai/) SaaS and uploaded as artifact in GitHub. This data is used for out Functional Testing later.
 
 ```yaml
 
