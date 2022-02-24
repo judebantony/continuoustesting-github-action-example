@@ -38,7 +38,7 @@ Sample dataset from Kaggle is present [here](https://github.com/judebantony/cont
 Kaggle dashboard:-
 ![kaggle](./doc/kaggle.png)
 
-#### Gretel.ai - Sysnthetic data
+#### Gretel.ai - Synthetic data
 
 1) Create a project in Gretel
 Gretel dashboard:-
@@ -48,7 +48,8 @@ Gretel dashboard:-
 Create model:-
 ![gretelcretemodel](./doc/gretelcretemodel.png)
 
-3) Train the model with configuration and validate
+3) Train the ML model with configuration and validate
+
 Train the ML Model:-
 ![greteltraining](./doc/greteltraining.png)
 ![greteltrainieddata](./doc/greteltrainieddata.png)
