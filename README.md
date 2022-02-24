@@ -67,7 +67,7 @@ Model Report:-
 Integration & Implementation of Continuous Testing workflow using [Github Action](https://github.com/features/actions), this has been achieved using GitHub Cloud, Gretel & LamdaTest SaaS tools listed below.
 
 ### 1) Gretel - Download Synthetic Test Data File from Gretel SaaS###
-Download already modeled & trained Synthetic Test Data from [Gretel](https://gretel.ai/) SaaS and uploaded as artifact in GitHub. This data is used for out Functional Testing later.
+Download already modeled & trained Synthetic Test Data from [Gretel](https://gretel.ai/) SaaS and uploaded as artifact in GitHub. This data is used for our Functional Testing.
 
 ```yaml
 
