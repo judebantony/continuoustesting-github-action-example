@@ -1,4 +1,4 @@
-# Continuous Testing with Synthetic Data using GitHub Action #
+# Continuous Testing with Synthetic Data using GitHub Action
 
 ## Continuous Testing in DevSecOps
 Continuous testing in DevSecOps is a type of software testing that involves testing at every stage of the development life cycle. The goal of continuous testing is to evaluate the quality of the software as part of a continuous delivery process, by testing early and often. 
