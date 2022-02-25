@@ -8,6 +8,8 @@ The old way of testing was hand off centric. The software was handed off from on
 
 In this day and age, businesses need faster delivery of softwares to the end user. The newer is the software, the better it can be marketed and thus the revenue potential of the company increases. Continuous Testing is a procedure of testing early - regularly - everywhere and automate. Continuous testing means undisrupted validation done on a continuous basis. In a Continuous DevSecOps process, a software change continuously moves from Development to Testing to Deployment. This process helps us to find the risk, address them and improve the quality of the product early.
 
+![continuoustesting](./doc/continuoustesting.png)
+
 ## Data Driven Testing 
 
 Data-driven testing (DDT), also known as table-driven testing or parameterized testing, is a software testing methodology performed using a table of conditions directly as test inputs and verifiable outputs. In the simplest form the tester supplies the inputs from a row in the table and expects the outputs which occur in the same row. The table typically contains values which correspond to boundary or partition input spaces. In the control methodology, test configuration is "read" from a database/csv/excel sheet.
@@ -168,7 +170,7 @@ GitHub Action:-
 
 ### 3) Functional Web UI Test - Using LamdaTest. ###
 
-Run your [Selenium](https://www.selenium.dev) test automation scripts across online selenium grid of desktop, Android and iOS mobile browsers. Develop, test, and deliver faster every time with automated cross browser testing using LambdaTest online Automation Browser Testing Grid.
+Run your [Selenium](https://www.selenium.dev) test automation scripts across online selenium grid of desktop, Android and iOS mobile browsers. Develop, test and deliver faster every time with automated cross browser testing using LambdaTest online Automation Browser Testing Grid.
 
 Execute the [Selenium](https://www.selenium.dev) [Cucumber](https://cucumber.io) based UI Test Cases using [LamdaTest](https://www.lambdatest.com/?fp_ref=aliakbar42) and capture the result. The feature files are present [here](https://github.com/judebantony/continuoustesting-github-action-example/tree/main/src/test/resources/com/jba/ci/ct/bdd/).
 
