@@ -8,7 +8,7 @@ The old way of testing was hand off centric. The software was handed off from on
 
 In this day and age, businesses need faster delivery of softwares to the end user. The newer is the software, the better it can be marketed and thus the revenue potential of the company increases. Continuous Testing is a procedure of testing early - regularly - everywhere and automate. Continuous testing means undisrupted validation done on a continuous basis. In a Continuous DevSecOps process, a software change continuously moves from Development to Testing to Deployment. This process helps us to find the risk, address them and improve the quality of the product early.
 
-![continuoustesting](./doc/continuoustesting.png)
+![continuoustesting](./doc/continuoustesting.svg)
 
 ## Data Driven Testing 
 
