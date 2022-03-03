@@ -38,6 +38,18 @@ import lombok.extern.slf4j.Slf4j;
 @CucumberContextConfiguration
 public class SeleniumStepDef {
 
+	private static final String CONSOLE = "console";
+	private static final String VIDEO = "video";
+	private static final String VISUAL = "visual";
+	private static final String NETWORK = "network";
+	private static final String NAME = "name";
+	private static final String BUILD = "build";
+	private static final String RESOLUTION = "resolution";
+	private static final String VERSION = "version";
+	private static final String BROWSER_NAME = "browserName";
+	private static final String ACCESS_KEY = "accessKey";
+	private static final String USER = "user";
+	private static final String PLATFORM = "platform";
 	private static final String _1024X768 = "1024x768";
 	private static final String _92_0 = "92.0";
 	private static final String CHROME = "Chrome";
@@ -50,7 +62,7 @@ public class SeleniumStepDef {
 	private static final String GRETEL_TEST_OUT_FILE = "GRETEL_TEST_OUT_FILE";
 	private static final String HTTPS = "https://";
 	private static final String HUB_CLOUD_LAMADATEST_COM_WD_HUB = "@hub.lambdatest.com/wd/hub";
-	private static final String COLLUMN = ":";
+	private static final String COL = ":";
 	private static final String GOOGLE_URL = "https://www.google.com/";
 	public static final String LAMADATEST_AUTOMATE_USERNAME = System.getenv(LT_EMAIL);
 	public static final String LAMADATEST_AUTOMATE_ACCESS_KEY = System.getenv(LT_ACCESS_KEY);
@@ -83,21 +95,21 @@ public class SeleniumStepDef {
 
 	private void getDesiredCapabilities() {
 		DesiredCapabilities caps = new DesiredCapabilities();
-		caps.setCapability("platform", WINDOWS_10);
-		caps.setCapability("user", LAMADATEST_AUTOMATE_USERNAME);
-		caps.setCapability("accessKey", LAMADATEST_AUTOMATE_ACCESS_KEY);
-		caps.setCapability("browserName", CHROME);
-		caps.setCapability("version", _92_0);
-		caps.setCapability("resolution", _1024X768);
-		caps.setCapability("build", CT_TEST);
-		caps.setCapability("name", GOOGLE_SEARCH_TEST);
-		caps.setCapability("network", true);
-		caps.setCapability("visual", true);
-		caps.setCapability("video", true);
-		caps.setCapability("console", true);
+		caps.setCapability(PLATFORM, WINDOWS_10);
+		caps.setCapability(USER, LAMADATEST_AUTOMATE_USERNAME);
+		caps.setCapability(ACCESS_KEY, LAMADATEST_AUTOMATE_ACCESS_KEY);
+		caps.setCapability(BROWSER_NAME, CHROME);
+		caps.setCapability(VERSION, _92_0);
+		caps.setCapability(RESOLUTION, _1024X768);
+		caps.setCapability(BUILD, CT_TEST);
+		caps.setCapability(NAME, GOOGLE_SEARCH_TEST);
+		caps.setCapability(NETWORK, true);
+		caps.setCapability(VISUAL, true);
+		caps.setCapability(VIDEO, true);
+		caps.setCapability(CONSOLE, true);
 		try {
 			driver = new RemoteWebDriver(
-					new URL(new StringBuilder().append(HTTPS).append(LAMADATEST_AUTOMATE_USERNAME).append(COLLUMN)
+					new URL(new StringBuilder().append(HTTPS).append(LAMADATEST_AUTOMATE_USERNAME).append(COL)
 							.append(LAMADATEST_AUTOMATE_ACCESS_KEY).append(HUB_CLOUD_LAMADATEST_COM_WD_HUB).toString()),
 					caps);
 		} catch (Exception e) {
@@ -114,7 +126,6 @@ public class SeleniumStepDef {
 	public void search_for() {
 		WebElement element = driver.findElement(By.name(Q));
 		element.sendKeys(testData);
-		log.info("Gretel Test Data :: {}",testData);
 		element.submit();
 	}
 
